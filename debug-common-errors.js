@@ -23,40 +23,61 @@ Think about which debugging methods you found most useful and how you might appl
 // Program A
 // Description:
 // This program is intended to display a simple prompt in the console but fails to run.
+// Program A
+// Description:
+// This program is intended to display a simple prompt in the console but fails to run.
 
-console.log("Welcome to the bootcamp
-
-// What’s Wrong?
+// Error Type: Syntax Error
+// What's Wrong:
+// The original code had a missing closing quote and parenthesis which causes a parse error.
+// Fix: close the string and the parentheses and end the statement with a semicolon.
+console.log("Welcome to the bootcamp");
 
 
 // Program B
 // Description:
-// This code attempts to multiply each number in an array by 2 and display the results. However, it crashes at runtime.
+// This code attempts to multiply each number in an array by 2 and display the results.
+
+// Error Type: Runtime Error (invalid array element type)
+// What's Wrong:
+// The array contains a non-numeric string ("eight"). Multiplying it directly produces NaN and may indicate bad input.
+// Fix: coerce each value to a number and skip or report invalid entries.
 
 let numbers = [2, 4, "eight"];
 for (let i = 0; i < numbers.length; i++) {
-  let doubled = numbers[i] * 2;
+  const raw = numbers[i];
+  const n = Number(raw);
+  if (Number.isNaN(n)) {
+    console.log(`Skipping invalid number at index ${i}: ${JSON.stringify(raw)}`);
+    continue;
+  }
+  let doubled = n * 2;
   console.log(doubled);
 }
-
-// What’s Wrong?
-
 
 
 // Program C (Logic Error)
 // Description:
-// This snippet of code is supposed to check if a given number is prime (i.e., divisible only by 1 and itself). However, it incorrectly marks some numbers as prime or not prime.
+// This snippet of code is supposed to check if a given number is prime (i.e., divisible only by 1 and itself).
+
+// Error Type: Logic Error
+// What's Wrong:
+// The original function returned true when a divisor was found (meaning NOT prime) and false otherwise.
+// Fix: return false when a divisor is found; return true after checking all divisors.
 
 function isPrime(num) {
   if (num < 2) return false;
-  for (let i = 2; i < num; i++) {
+  // Only check divisors up to sqrt(num)
+  for (let i = 2; i * i <= num; i++) {
     if (num % i === 0) {
-      return true;  // Supposed to indicate num is NOT prime
+      return false; // not prime
     }
   }
-  return false; // Supposed to indicate num IS prime
+  return true; // prime
 }
 
-console.log(isPrime(7)); // Expected true but gets false
-
-// What’s Wrong?
+// Verification
+console.log('isPrime(7) ->', isPrime(7)); // Expected: true
+console.log('isPrime(4) ->', isPrime(4)); // Expected: false
+console.log('isPrime(2) ->', isPrime(2)); // Expected: true
+console.log('isPrime(1) ->', isPrime(1)); // Expected: false
